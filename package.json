@@ -1,0 +1,20 @@
+{
+  "name": "next-test",
+  "version": "1.0.0",
+  "author": "Naoise Golden <naoise.golden@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "engines": {
+    "node": "^10.0.0",
+    "yarn": ">=1.0.0"
+  },
+  "dependencies": {
+    "next": "^7.0.2",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
+  }
+}
