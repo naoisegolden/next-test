@@ -1,54 +1,20 @@
 import Layout from '../components/Layout'
-import fetch from 'isomorphic-unfetch'
-import Markdown from 'react-markdown'
+import loadDB from '../lib/load-db'
 
-const Post =  (props) => (
+const Post = ({ item }) => (
   <Layout>
-    <h1>{props.show.name}</h1>
-    <p>{props.show.summary.replace(/<[/]?p>/g, '')}</p>
-    <img src={props.show.image.medium}/>
-    <div className="markdown">
-      <Markdown source={`
-This is our blog post.
-Yes. We can have a [link](/link).
-And we can have a title as well.
-
-### This is a title
-
-And here's the content.
-      `}/>
-    </div>
-    <style jsx global>{`
-      .markdown {
-       font-family: 'Arial';
-      }
-
-      .markdown a {
-       text-decoration: none;
-       color: blue;
-      }
-
-      .markdown a:hover {
-       opacity: 0.6;
-      }
-
-      .markdown h3 {
-       margin: 0;
-       padding: 0;
-       text-transform: uppercase;
-      }
-    `}</style>
+     <h1>{item.title}</h1>
+     <p>URL: <a target="_blank" href={item.url}>{item.url}</a></p>
   </Layout>
 )
 
-Post.getInitialProps = async function (context) {
-  const { id } = context.query
-  const res = await fetch(`https://api.tvmaze.com/shows/${id}`)
-  const show = await res.json()
+Post.getInitialProps = async ({ query }) => {
+  console.log('XXX', query.id)
+  const db = await loadDB()
+  let item = await db.child('item').child(query.id).once('value')
+  item = item.val()
 
-  console.log(`Fetched show: ${show.name}`)
-
-  return { show }
+  return { item }
 }
 
 export default Post
